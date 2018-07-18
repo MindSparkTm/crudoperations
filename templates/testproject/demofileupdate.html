@@ -1,0 +1,255 @@
+
+{% load static %}
+<html>
+<head>
+<meta name="viewport" content="width=1280, initial-scale=1">
+    <title>Test Project</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!--[if lt IE 9]>
+   <![endif]-->
+    <!--
+    anatine, a free CSS web template by ZyPOP (zypopwebtemplates.com/)
+
+    Download: http://zypopwebtemplates.com/
+
+    License: Creative Commons Attribution
+    //-->
+</head>
+
+<body>
+
+<section id="body" class="width">
+    <aside id="sidebar" class="column-left">
+
+
+
+
+
+    </aside>
+    <section id="content" class="column-right">
+ <form>
+     <label>Search by Id</label>
+                        <div>
+                          <input type="text" id="searchdata" type="number" name="searchdata"  spellcheck="true" maxlength="70" style=" width: 100%;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;"></input>
+
+
+
+                        </div>
+
+
+                       <div>
+                        <div>
+                            <input type="submit"  id="btn_search" value="Search" style="background: transparent;color: #0099CC;border: 2px solid #0099CC;border-radius: 6px;border-radius: 6px;
+"></input>
+                        </div>
+                    </div>
+
+ </form>
+
+
+                <form method="post" name="Form">
+
+                {% csrf_token %}
+
+ <div>
+     <input type="hidden" id="userid" name="userid" value="userid"></input>
+
+                    <div>
+                        <label>Name</label>
+                        <div>
+                          <input type="text" id="uname" name="uname"  spellcheck="true" maxlength="70" style=" width: 100%;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;"></input>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div>
+                        <label >
+                            Email
+                        </label>
+                        <div>
+                            <input id="email" style=" width: 100%;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;" name="email" type="email" spellcheck="false" value="" maxlength="255" tabindex="3">
+                        </div>
+                    </div>
+                    <br>
+
+
+                    <br>
+
+
+
+
+
+                       <div>
+                        <label>
+                            Postal address
+                        </label>
+                        <div>
+                            <input id="postalcode" name="postalcode" type="number" >
+                        </div>
+                    </div>
+                    <br>
+
+
+                       <div>
+                        <label>
+                            Phone number
+                        </label>
+                        <div>
+                            <input id="phonenumber" name="phonenumber" type="number" >
+                        </div>
+                    </div>
+<br><br>
+                    <div>
+                        <div>
+                            <input type="submit" id ="updatebtn" value="Update" style="background: transparent;color: #0099CC;border: 2px solid #0099CC;border-radius: 6px;border-radius: 6px;"></input>
+                        </div>
+<br>
+                          <div>
+                            <input type="submit" id ="viewcurrentusers" value="View" style="background: transparent;color: #0099CC;border: 2px solid #0099CC;border-radius: 6px;border-radius: 6px;"></input>
+                        </div>
+                    </div>
+
+      <div>
+
+                    </div>
+
+ </div>
+
+
+
+
+
+                </form>
+
+    <script
+
+  src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+
+<script type="text/javascript">
+
+ $('#btn_search').click(function(e) {
+     e.preventDefault()
+
+     var id = $('#searchdata').val();
+     console.log('id', id)
+     if (id.length > 0) {
+
+
+         $.ajax({
+
+             url: "/plentyofcats/api/v1/userapi/",
+             type: "get",
+             data: {
+                 search: id
+
+             },
+             dataType: 'json',
+
+
+             success: function (json) {
+                 console.log(json)
+                 json = json.results
+                 if (json.length > 0) {
+
+
+                     var data = jQuery.map(json, function (el, i) {
+                         /*  if(el.title.length>20){
+                             el.title = el.title.substring(0,10) + '..........';
+                         }*/
+                         el.created = el.created.substring(0, 10);
+
+                         return [[el.name, el.mobilenumber, el.email, el.postalcode]];
+                     });
+
+                     console.log(data[0][1])
+
+                     $('#uname').val(data[0][0])
+                     $('#email').val(data[0][2])
+                     $('#postalcode').val(data[0][3])
+                     $('#phonenumber').val(data[0][1])
+
+                     $('#userid').val(id)
+                 }
+
+                 else {
+
+
+                     $('#uname').val('')
+                     $('#email').val('')
+                     $('#postalcode').val('')
+                     $('#phonenumber').val('')
+
+                     alert('No user found with that id')
+
+
+                 }
+
+
+             }
+
+
+         })
+
+     }
+
+     else {
+
+         alert('Enter a valid id')
+
+
+     }
+ })
+
+
+
+
+
+
+
+$('#viewcurrentusers').click(function (e) {
+    e.preventDefault();
+                 window.location.href="/testproject/viewusers"
+
+
+})
+
+
+
+$(document).ready(function () {
+
+     })
+
+</script>
+
+
+
+
+        <footer class="clear">
+            <p>&copy; 2018 PlentyofCats by Anonymous<img src="{% static 'img/poc.png' %}" alt="plentyofcats"></p>
+        </footer>
+
+    </section>
+
+    <div class="clear"></div>
+
+</section>
+
+
+</body>
+</html>

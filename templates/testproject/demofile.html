@@ -1,0 +1,165 @@
+
+{% load static %}
+<html>
+<head>
+<meta name="viewport" content="width=1280, initial-scale=1">
+    <title>Test Project</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!--[if lt IE 9]>
+   <![endif]-->
+    <!--
+    anatine, a free CSS web template by ZyPOP (zypopwebtemplates.com/)
+
+    Download: http://zypopwebtemplates.com/
+
+    License: Creative Commons Attribution
+    //-->
+</head>
+
+<body>
+
+<section id="body" class="width">
+    <aside id="sidebar" class="column-left">
+
+
+
+
+
+    </aside>
+    <section id="content" class="column-right">
+
+
+
+                <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()" name="Form">
+
+                {% csrf_token %}
+
+
+
+                    <div>
+                        <label>Name</label>
+                        <div>
+                          <input type="text" id="uname" name="uname"  spellcheck="true" maxlength="70" style=" width: 100%;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;"></input>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div>
+                        <label >
+                            Email
+                        </label>
+                        <div>
+                            <input id="email" style=" width: 100%;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;" name="email" type="email" spellcheck="false" value="" maxlength="255" tabindex="3">
+                        </div>
+                    </div>
+                    <br>
+
+
+                    <br>
+
+
+
+
+
+                       <div>
+                        <label>
+                            Postal address
+                        </label>
+                        <div>
+                            <input id="postalcode" name="postalcode" type="number" >
+                        </div>
+                    </div>
+                    <br>
+
+
+                       <div>
+                        <label>
+                            Phone number
+                        </label>
+                        <div>
+                            <input id="phonenumber" name="phonenumber" type="number" >
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <input type="submit" value="Register" style="background: transparent;color: #0099CC;border: 2px solid #0099CC;border-radius: 6px;border-radius: 6px;
+"></input>
+                        </div>
+                    </div>
+
+
+
+                </form>
+
+    <script
+
+  src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+
+<script type="text/javascript">
+
+
+
+
+function validateForm()
+    {
+        var a=document.forms["Form"]["name"].value;
+        var b=document.forms["Form"]["email"].value;
+        var c=document.forms["Form"]["postalcode"].value;
+        var e=document.forms["Form"]["phonenumber"].value;
+
+        if (a==null || a=="",b==null || b=="",c==null || c=="",e==null||e=="") {
+
+
+            alert("Please Fill All Required Field");
+            return false;
+        }
+
+            else{
+
+                alert('Your post has been successfully submitted');
+            }
+
+
+
+
+
+
+
+
+
+
+    }
+     $(document).ready(function () {
+
+     })
+
+</script>
+
+
+
+
+        <footer class="clear">
+            <p>&copy; 2018 PlentyofCats by Anonymous<img src="{% static 'img/poc.png' %}" alt="plentyofcats"></p>
+        </footer>
+
+    </section>
+
+    <div class="clear"></div>
+
+</section>
+
+
+</body>
+</html>

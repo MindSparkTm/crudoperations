@@ -1,0 +1,253 @@
+
+{% load static %}
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+  <script
+
+  src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.2/jspdf.plugin.autotable.js"></script>
+
+<meta name="viewport" content="width=1280, initial-scale=1">
+</head>
+
+<body>
+
+<section id="body" class="width">
+    <aside id="sidebar" class="column-left">
+
+
+
+        <nav id="mainnav">
+
+        </nav>
+
+
+
+    </aside>
+    <section id="content" class="column-right">
+
+        <article>
+
+
+<br><br>
+
+                <form method="post" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+
+
+
+
+
+
+
+
+
+
+
+                </form>
+
+<br>
+            <div style="width: 80%">
+
+    <table id="demotbl" class="display" cellspacing="0" width="auto">
+    <thead style="display:none;">
+        <tr>
+            <th>Id</th>
+            <th>Created</th>
+            <th>Name</th>
+            <th>Mobilenumber</th>
+            <th>Postalcode</th>
+            <th>Email</th>
+            <th>more</th>
+
+
+
+
+
+
+
+
+
+
+
+        </tr>
+    </thead>
+</table>
+
+</div>
+<script type="text/javascript">
+
+
+     $(document).ready(function () {
+         var siteWidth = 1280;
+var scale = screen.width /siteWidth
+
+document.querySelector('meta[name="viewport"]').setAttribute('content', 'width='+siteWidth+', initial-scale='+scale+'');
+
+         $.ajax({
+
+             url: "/testproject/api/v1/userapi/",
+             type: "get",
+
+
+             success: function (json) {
+                 console.log(json)
+                 json = json.results
+                 if (json.length === 0) {
+                     var data = jQuery.map(json, function (el, i) {
+                         return [['--', '--', '--', '--']];
+                     });
+
+
+                      var data = jQuery.map(json, function (el, i) {
+                       /*  if(el.title.length>20){
+                             el.title = el.title.substring(0,10) + '..........';
+                         }*/
+                         el.created = el.created.substring(0,10);
+
+                         return [[el.id,el.created,el.name, el.mobilenumber,el.email,el.postalcode]];
+                     });
+
+                     $('#demotbl').DataTable({
+                         "searching": false,
+                         "bLengthChange": false,
+                         "bInfo": false,
+                          "order": [[ 3, "desc" ]],
+
+
+
+                         "aaData": data,
+                         "aoColumns": [
+                             {"id": "Id"},
+
+                             {"sTitle": "Created"},
+
+                             {"sTitle": "Name"},
+                             {"sTitle": "Mobilenumber"},
+                             {"sTitle": "Postalcode"},
+                             {"sTitle": "Email"},
+
+
+                             {
+                                 "targets": -1,
+                                 "data": null,
+                                 "defaultContent": "<button id ='btn2' name='btn2' style='background: transparent;color: #0099CC;border: 2px solid #0099CC;border-radius: 6px;border-radius: 6px;'>Delete</button>"
+                             }
+                         ]
+
+
+                     })
+
+                 } else {
+
+
+                     var data = jQuery.map(json, function (el, i) {
+                       /*  if(el.title.length>20){
+                             el.title = el.title.substring(0,10) + '..........';
+                         }*/
+                         el.created = el.created.substring(0,10);
+
+                         return [[el.id,el.created,el.name, el.mobilenumber,el.email,el.postalcode]];
+                     });
+
+                     $('#demotbl').DataTable({
+                         "searching": false,
+                         "bLengthChange": false,
+                         "bInfo": false,
+                          "order": [[ 3, "desc" ]],
+
+
+
+                         "aaData": data,
+                         "aoColumns": [
+                             {"id": "Id"},
+
+                             {"sTitle": "Created"},
+
+                             {"sTitle": "Name"},
+                             {"sTitle": "Mobilenumber"},
+                             {"sTitle": "Postalcode"},
+                             {"sTitle": "Email"},
+
+
+                             {
+                                 "targets": -1,
+                                 "data": null,
+                                 "defaultContent": "<button id ='btn2' name='btn2' style='background: transparent;color: #0099CC;border: 2px solid #0099CC;border-radius: 6px;border-radius: 6px;'>Delete</button>"
+                             }
+                         ]
+
+
+                     })
+
+                     $('#demotbl tbody').on('click', 'button#btn2', function (e) {
+                         e.preventDefault();
+                         console.log('selected')
+                         var tr = $(this).closest('tr');
+                         var rows = $('#demotbl').DataTable().row(tr);
+
+                         var info = rows.data();
+                         var dat = [info];
+                         var id = info[0];
+
+
+                        $.ajax({
+        url: '/testproject/deleteusers/',
+        data: {
+          'id': id
+        },
+        dataType: 'json',
+        success: function (data) {
+               console.log('data',data)
+            if(data=="success"){
+                   alert('Successfully deleted user');
+
+                window.location.href="/testproject/viewusers/"
+            }
+        }
+      });
+
+                     });
+                 }
+             }
+         })
+
+     });
+
+
+
+
+</script>
+
+
+
+
+        </article>
+
+
+
+
+
+
+
+
+
+    </section>
+
+    <div class="clear"></div>
+
+</section>
+
+
+</body>
+</html>
